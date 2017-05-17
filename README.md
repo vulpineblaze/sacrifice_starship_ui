@@ -32,3 +32,7 @@ try to make a starship UI instead of using roll20
    * player just auth
      * eventual email auth to campaign for multi-campaign support
    * auth not required, but has read-only access 
+
+ * dice rolls
+   * do i even want to do this?
+   * input a number, system rolls that many d12's, and give resultant successes
