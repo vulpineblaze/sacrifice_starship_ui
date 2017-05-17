@@ -26,3 +26,9 @@ try to make a starship UI instead of using roll20
    * health
    * relation with various species
    * money at plants
+   
+ * auth
+   * GM email auth
+   * player just auth
+     * eventual email auth to campaign for multi-campaign support
+   * auth not required, but has read-only access 
