@@ -36,3 +36,9 @@ try to make a starship UI instead of using roll20
  * dice rolls
    * do i even want to do this?
    * input a number, system rolls that many d12's, and give resultant successes
+   
+ * characters
+   * do i even want to do this too? 
+   * tie chars to emails
+   * retain stats, exp, money, etc..
+   * could generate dicerolls, but thats obnoxious 
