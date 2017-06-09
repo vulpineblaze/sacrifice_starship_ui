@@ -1,4 +1,5 @@
 const crypto = require("crypto");
+const gen = require("./generator.js");
 
 module.exports = function(app, passport, db) {
 
@@ -154,6 +155,14 @@ module.exports = function(app, passport, db) {
     })
   })
 
+
+
+  app.get('/generate', (req, res, next) => {
+    var result = gen.gen(function (a) {
+      result = a;
+    });
+    res.render('generate.ejs', {result: result})
+  })
 
   app.post('/campaigns', (req, res) => {
     const id = crypto.randomBytes(16).toString("hex");

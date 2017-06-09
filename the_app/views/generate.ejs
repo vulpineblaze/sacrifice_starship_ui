@@ -33,20 +33,28 @@
 
 
 
+    <div> <a href="/">Home</a> </div>
 <div class="line"></div>
 
 
-  <% if (campaigns.length == 0){ %>
+  <% if (result.length == 0){ %>
     <P> Please add a star</P>
   <% }else{ %>
 
 
-    <% for(var i=0; i<campaigns.length; i++) {%>
-      <div id="<%= campaigns[i].name %>" class="text_container">
-        <!-- <div class="title"><%= campaigns[i].title %></div>   -->
-        <p><a href="campaign-<%= campaigns[i].guid %>"><%= campaigns[i].name %></a> </p>
+    <% for(var i=0; i<result.length; i++) {%>
+      <div id="<%= result[i].name %>" class="text_container">
+        <p><%= result[i].name %> 
 
+          <% if (result[i].planets.length == 0){ %>
+          <% }else{ %>
+             Planets:
+            <% for(var j=0; j<result[i].planets.length; j++) {%>
 
+              <BR><%= result[i].planets[j] %> 
+            <% } %>
+          <% } %>
+        </p>
       </div>
       
 
@@ -56,55 +64,6 @@
 
 
 
-
-
-<%if (auth) { %>
-
-<div class="logout"><a href="/logout">logout</a>  </div>
-
-
-  <div class="add_container">
-    <h2>Create a campaign</h2>
-
-    <!-- 
-      <h4>
-      User   <input type="text" placeholder="u/user_name/" name="user"><br>
-      Star ID   <input type="text" placeholder="0000:0000:0000:0000" name="id"><br>
-      Current Star Name   <input type="text" placeholder="[HUB-X-00] coolname [stuff]" name="name"><br>
-      Star Class   <input type="text" placeholder="F9pf" name="class"><br>
-      Occupying Race   <input type="text" placeholder="Gek" name="race"><br>
-      What was interesting?   <input type="text" placeholder="Ce, Te, Sp, DynRes, Lush, Diplo" name="tags"></h4> -->
-
-      <div class="add_left_col">
-         <br> 
-        Title  <br>
-        Text
-
-      </div>
-
-
-      <div class="add_right_col">
-
-        <form action="/campaigns" method="POST" >
-          <button type="submit">Submit</button><br>
-            <input type="text" placeholder="c01s01" name="name"><br>
-<!--             <textarea name="text" cols="40" rows="5"></textarea>
- -->        </form>
-
-      </div>
-
-    
-  </div>
-
-
-<% } else { %>
-
-  <div ><a href="/auth/google">google</a>  </div>
-  <div ><a href="/auth/github">github</a>  </div>
-
-<% } %>
-
-<div ><a href="/generate">Star System Generator</a>  </div>
 <!-- 
 
 <script>
