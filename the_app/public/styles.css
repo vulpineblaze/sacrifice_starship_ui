@@ -53,13 +53,13 @@ html {
 }
 
 .add_left_col {
-    width: 50%;
+    width: 30%;
     float: left;
     font-size: 21px;
     font-weight: bold;
 }
 .add_right_col {
-    width: 50%;
+    width: 70%;
     float: left;
 }
 

@@ -104,6 +104,18 @@
     <% } %>
   <% } %>
 </div>
+<div id="ships" class="text_container">
+  <% if (ships.length == 0){ %>
+    <P> Please add a ship</P>
+  <% }else{ %>
+
+
+
+    <% for(var i=0; i<ships.length; i++) {%>
+        <a href="campaign-<%= campaign %>/ship-<%= ships[i].guid %>"><%= ships[i].name %></a> : <%= ships[i].text %>
+    <% } %>
+  <% } %>
+</div>
 
 
 
@@ -135,6 +147,31 @@
             <input type="text" placeholder="centauri" name="region"><br>
             <input type="number" placeholder="1" name="x"><br>
             <input type="number" placeholder="1" name="y"><br>
+            <div id="campaign" style="display: none;"><input type="text" value="<%= campaign %>" name="campaign"></div>
+            <textarea name="text" cols="40" rows="5"></textarea>
+        </form>
+
+      </div>
+
+    
+  </div>
+
+<div class="add_container">
+    <h2>Create a ship</h2>
+      <div class="add_left_col">
+         <br> 
+        Title  <br>
+        Text
+
+      </div>
+
+
+      <div class="add_right_col">
+
+        <form action="/campaign-<%= campaign %>/ship" method="POST" >
+          <button type="submit">Submit</button><br>
+
+            <input type="text" placeholder="SS Sacrifice" name="name"><br><br>
             <div id="campaign" style="display: none;"><input type="text" value="<%= campaign %>" name="campaign"></div>
             <textarea name="text" cols="40" rows="5"></textarea>
         </form>

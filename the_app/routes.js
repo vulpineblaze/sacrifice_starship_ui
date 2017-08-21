@@ -44,13 +44,17 @@ module.exports = function(app, passport, db) {
     });
     db.collection('campaigns').find({guid:req.params.guid}).toArray((err, result) => {
       var name = result[0].name;
-      db.collection('stars').find({campaign:req.params.guid}).toArray((err, result) => {
-        if (err) return console.log(err)
-        res.render('campaign.ejs', {stars: result, 
-                                    auth:auth, 
-                                    campaign:req.params.guid,
-                                    c_name:name
-                                  })
+      db.collection('ships').find({campaign:req.params.guid}).toArray((err, result) => {
+        var ships =result;
+        db.collection('stars').find({campaign:req.params.guid}).toArray((err, result) => {
+          if (err) return console.log(err)
+          res.render('campaign.ejs', {stars: result, 
+                                      ships:ships, 
+                                      auth:auth, 
+                                      campaign:req.params.guid,
+                                      c_name:name
+                                    })
+        })
       })
     })
   })
@@ -81,6 +85,29 @@ module.exports = function(app, passport, db) {
     })
   })
 
+
+  app.get('/campaign-:guid/ship-:suid', (req, res, next) => {
+    var db_user="";
+    var req_user="";
+    var auth = checkAuth(req,res,next,db, function (a, user) {
+      console.log("inside,a:"+a+ " user:"+user);
+
+      auth = a;
+    });
+
+
+      db.collection('ships').find({guid:req.params.suid}).toArray((err, ships) => {
+        var this_ship= ships[0];
+        db.collection('ships_items').find({ship:req.params.suid}).toArray((err, result) => {
+          if (err) return console.log(err)
+          res.render('ship.ejs', {ships_items: result, 
+                                  auth:auth, 
+                                  campaign:req.params.guid,
+                                  this_ship:this_ship})
+        })
+      })
+  })
+
   app.get('/campaign-:guid/star-:suid/planet-:puid', (req, res, next) => {
     var db_user="";
     var req_user="";
@@ -102,6 +129,24 @@ module.exports = function(app, passport, db) {
     })
   })
 
+  app.get('/campaign-:guid/ship-:suid/item-:puid', (req, res, next) => {
+    var db_user="";
+    var req_user="";
+    var auth = checkAuth(req,res,next,db, function (a, user) {
+      console.log("inside,a:"+a+ " user:"+user);
+
+      auth = a;
+    });
+
+      db.collection('ships_items').find({guid:req.params.puid}).toArray((err, result) => {
+        if (err) return console.log(err)
+        res.render('item.ejs', {this_item: result[0], 
+                                auth:auth, 
+                                campaign:req.params.guid,
+                                star:req.params.suid})
+      })
+  })
+
   app.get('/planet-:puid', (req, res, next) => {
 
     db.collection('planets').find({guid:req.params.puid}).toArray((err, p) => {
@@ -111,11 +156,29 @@ module.exports = function(app, passport, db) {
       })
     })
   })
+  app.get('/item-:puid', (req, res, next) => {
+
+    db.collection('ships_items').find({guid:req.params.puid}).toArray((err, p) => {
+      db.collection('ships').find({guid:p[0].ship}).toArray((err, s) => {
+        res.redirect('/campaign-'+s[0].campaign+'/ship-'+p[0].ship+'/item-'+req.params.puid)
+
+      })
+    })
+  })
 
   app.get('/star-:suid', (req, res, next) => {
 
       db.collection('stars').find({guid:req.params.suid}).toArray((err, s) => {
         res.redirect('/campaign-'+s[0].campaign+'/star-'+req.params.suid)
+
+      })
+
+
+  })
+  app.get('/ship-:suid', (req, res, next) => {
+
+      db.collection('ships').find({guid:req.params.suid}).toArray((err, s) => {
+        res.redirect('/campaign-'+s[0].campaign+'/ship-'+req.params.suid)
 
       })
 
@@ -164,6 +227,13 @@ module.exports = function(app, passport, db) {
     res.render('generate.ejs', {result: result})
   })
 
+
+
+
+
+
+
+
   app.post('/campaigns', (req, res) => {
     const id = crypto.randomBytes(16).toString("hex");
     req.body.guid = id.substring(0,7);
@@ -184,6 +254,16 @@ module.exports = function(app, passport, db) {
     })
   })
 
+  app.post('/campaign-:guid/ship', (req, res) => {
+    const id = crypto.randomBytes(16).toString("hex");
+    req.body.guid = id.substring(0,7);
+    db.collection('ships').save(req.body, (err, result) => {
+      if (err) return console.log(err)
+      console.log('saved to database')
+      res.redirect('/campaign-'+req.params.guid)
+    })
+  })
+
   app.post('/campaign-:guid/star-:suid/planet', (req, res) => {
     const id = crypto.randomBytes(16).toString("hex");
     req.body.guid = id.substring(0,7);
@@ -191,6 +271,16 @@ module.exports = function(app, passport, db) {
       if (err) return console.log(err)
       console.log('saved to database')
       res.redirect('/campaign-'+req.params.guid+'/star-'+req.params.suid)
+    })
+  })
+
+  app.post('/campaign-:guid/ship-:suid/item', (req, res) => {
+    const id = crypto.randomBytes(16).toString("hex");
+    req.body.guid = id.substring(0,7);
+    db.collection('ships_items').save(req.body, (err, result) => {
+      if (err) return console.log(err)
+      console.log('saved to database')
+      res.redirect('/campaign-'+req.params.guid+'/ship-'+req.params.suid)
     })
   })
 
@@ -268,6 +358,55 @@ module.exports = function(app, passport, db) {
       if (err) return res.send(err)
       // res.send(result)
       res.redirect('/planet-'+req.params.puid)
+    })
+  })
+
+  app.post('/update_ship-:suid', (req, res) => {
+    db.collection('ships')
+    .findOneAndUpdate({guid: req.params.suid}, {
+      $set: {
+        name: req.body.name,
+        text: req.body.text,
+        campaign: req.body.campaign,
+        guid: req.params.suid
+      }
+    }, {
+      sort: {_id: -1}
+    }, (err, result) => {
+      if (err) return res.send(err)
+      // res.send(result)
+      res.redirect('/ship-'+req.params.suid)
+    })
+  })
+
+  app.post('/update_item-:puid', (req, res) => {
+    db.collection('ships_items')
+    .findOneAndUpdate({guid: req.params.puid}, {
+      $set: {
+        name: req.body.name,
+        text: req.body.text,
+        health: req.body.health,
+        armor: req.body.armor,
+        repaircost: req.body.repaircost,
+        damage: req.body.damage,
+        ap: req.body.ap,
+        range: req.body.range,
+        maxcharge: req.body.maxcharge,
+        euh: req.body.euh,
+        acc: req.body.acc,
+        speed: req.body.speed,
+        xport: req.body.xport,
+        iport: req.body.iport,
+        cost: req.body.cost,
+        ship: req.body.ship,
+        guid: req.params.puid
+      }
+    }, {
+      sort: {_id: -1}
+    }, (err, result) => {
+      if (err) return res.send(err)
+      // res.send(result)
+      res.redirect('/item-'+req.params.puid)
     })
   })
 
