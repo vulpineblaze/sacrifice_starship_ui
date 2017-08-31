@@ -91,6 +91,8 @@
 
 
 
+
+
 <div id="stars" class="text_container">
   <% if (stars.length == 0){ %>
     <P> Please add a star</P>
@@ -124,6 +126,8 @@
 
 
 <%if (auth) { %>
+
+
 
 <div class="logout"><a href="/logout">logout</a>  </div>
 
@@ -172,7 +176,8 @@
           <button type="submit">Submit</button><br>
 
             <input type="text" placeholder="SS Sacrifice" name="name"><br><br>
-            <div id="campaign" style="display: none;"><input type="text" value="<%= campaign %>" name="campaign"></div>
+            <div id="campaign" style="display: none;"><input type="text" value="<%= campaign %>" name="campaign">
+            <input type="email" name="email" value="<%= auth %>"><br> </div>
             <textarea name="text" cols="40" rows="5"></textarea>
         </form>
 
@@ -207,9 +212,36 @@
     
   </div>
 
+<div><% for(var i=0; i<emails.length; i++) {%>
+        <div><%= emails[i] %></div>
+    <% } %></div>
+
+
+  <div class="add_container">
+    <h2>add email to campaign</h2>
+      <div class="add_left_col">
+         <br> 
+        Title  <br>
+        Text
+
+      </div>
+
+
+      <div class="add_right_col">
+
+        <form action="/add_email_campaign-<%= campaign %>" method="POST" >
+          <button type="submit">Submit</button><br>
+
+            <input type="email" name="email"><br>
+        </form>
+
+      </div>
+  </div>
 
 
 <% } else { %>
+
+  <P> Please sign in</P>
 
   <div ><a href="/auth/google">google</a>  </div>
   <div ><a href="/auth/github">github</a>  </div>

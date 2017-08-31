@@ -36,8 +36,16 @@
 <div class="line"></div>
 
 
+
+
+
+
+<%if (auth) { %>
+
+
+
   <% if (campaigns.length == 0){ %>
-    <P> Please add a star</P>
+    <P> Please add a campaign</P>
   <% }else{ %>
 
 
@@ -54,11 +62,6 @@
   <% } %>
 
 
-
-
-
-
-<%if (auth) { %>
 
 <div class="logout"><a href="/logout">logout</a>  </div>
 
@@ -88,6 +91,7 @@
         <form action="/campaigns" method="POST" >
           <button type="submit">Submit</button><br>
             <input type="text" placeholder="c01s01" name="name"><br>
+            <div id="campaign" style="display: none;"><input type="email" name="email" value="<%= auth %>"><br> </div>
 <!--             <textarea name="text" cols="40" rows="5"></textarea>
  -->        </form>
 
@@ -99,11 +103,14 @@
 
 <% } else { %>
 
-  <div ><a href="/auth/google">google</a>  </div>
-  <div ><a href="/auth/github">github</a>  </div>
+<P>Please sign in:</P>
+
+  <!-- <div ><a href="/auth/google">google</a>  </div> -->
+  <P> Sorry, only github auth works rn</P>
+  <div ><a href="/auth/github">github</a> </div>
 
 <% } %>
-
+<P></P>
 <div ><a href="/generate">Star System Generator</a>  </div>
 <!-- 
 

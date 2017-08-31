@@ -18,7 +18,7 @@ module.exports = function(app, passport, db) {
 
     var the_date = new Date().toISOString().replace(/T.+/, ' ').replace(/\..+/, '');
     // console.log("the_date:"+the_date);
-    db.collection('campaigns').find().toArray((err, result) => {
+    db.collection('campaigns').find({email:auth}).toArray((err, result) => {
       if (err) return console.log(err)
       // console.log(result.length);
       res.render('index.ejs', {campaigns: result, auth:auth})
@@ -42,9 +42,19 @@ module.exports = function(app, passport, db) {
 
       auth = a;
     });
-    db.collection('campaigns').find({guid:req.params.guid}).toArray((err, result) => {
-      var name = result[0].name;
-      db.collection('ships').find({campaign:req.params.guid}).toArray((err, result) => {
+    
+    
+    db.collection('campaigns').find({guid:req.params.guid,email:auth}).toArray((err, result) => {
+      if(result[0]){
+        var name = result[0].name;
+        var emails = result[0].email;
+      }else{
+        var name = "undef";
+        var emails = [];
+      }
+      
+      
+      db.collection('ships').find({campaign:req.params.guid,email:auth}).toArray((err, result) => {
         var ships =result;
         db.collection('stars').find({campaign:req.params.guid}).toArray((err, result) => {
           if (err) return console.log(err)
@@ -52,7 +62,8 @@ module.exports = function(app, passport, db) {
                                       ships:ships, 
                                       auth:auth, 
                                       campaign:req.params.guid,
-                                      c_name:name
+                                      c_name:name,
+                                      emails:emails
                                     })
         })
       })
@@ -98,12 +109,14 @@ module.exports = function(app, passport, db) {
 
       db.collection('ships').find({guid:req.params.suid}).toArray((err, ships) => {
         var this_ship= ships[0];
+        var emails = ships[0].email;
         db.collection('ships_items').find({ship:req.params.suid}).toArray((err, result) => {
           if (err) return console.log(err)
           res.render('ship.ejs', {ships_items: result, 
                                   auth:auth, 
                                   campaign:req.params.guid,
-                                  this_ship:this_ship})
+                                  this_ship:this_ship,
+                                  emails:emails})
         })
       })
   })
@@ -237,6 +250,9 @@ module.exports = function(app, passport, db) {
   app.post('/campaigns', (req, res) => {
     const id = crypto.randomBytes(16).toString("hex");
     req.body.guid = id.substring(0,7);
+    var temp = req.body.email;
+    req.body.email = [];
+    req.body.email.push(temp);
     db.collection('campaigns').save(req.body, (err, result) => {
       if (err) return console.log(err)
       console.log('saved to database')
@@ -257,6 +273,9 @@ module.exports = function(app, passport, db) {
   app.post('/campaign-:guid/ship', (req, res) => {
     const id = crypto.randomBytes(16).toString("hex");
     req.body.guid = id.substring(0,7);
+    var temp = req.body.email;
+    req.body.email = [];
+    req.body.email.push(temp);
     db.collection('ships').save(req.body, (err, result) => {
       if (err) return console.log(err)
       console.log('saved to database')
@@ -303,6 +322,10 @@ module.exports = function(app, passport, db) {
       res.redirect('/planet-'+req.params.puid)
     })
   })
+
+
+
+
 
   app.post('/update_campaign-:guid', (req, res) => {
     db.collection('campaigns')
@@ -449,6 +472,51 @@ module.exports = function(app, passport, db) {
 
 
 
+
+
+
+
+
+
+
+
+  app.post('/add_email_campaign-:guid', (req, res) => {
+    console.log("email to add:"+req.body.email);
+    db.collection('campaigns')
+    .updateOne({guid: req.params.guid}, {
+      $push: {
+        email: req.body.email
+      }
+    }, {
+      sort: {_id: -1}
+    }, (err, result) => {
+      if (err) return res.send(err)
+      // res.send(result)
+      res.redirect('/campaign-'+req.params.guid)
+    })
+  })
+
+
+
+  app.post('/add_email_ship-:guid', (req, res) => {
+    console.log("email to add:"+req.body.email);
+    db.collection('ships')
+    .updateOne({guid: req.params.guid}, {
+      $push: {
+        email: req.body.email
+      }
+    }, {
+      sort: {_id: -1}
+    }, (err, result) => {
+      if (err) return res.send(err)
+      // res.send(result)
+      res.redirect('/ship-'+req.params.guid)
+    })
+  })
+
+
+
+
   // app.put('/hoa', (req, res) => {
   //   db.collection('hoa')
   //   .findOneAndUpdate({name: 'Yoda'}, {
@@ -538,25 +606,26 @@ function ensureAuthenticated(req, res, next) {
 function checkAuth(req, res, next, db, callback){
   var auth = false;
   if (req.isAuthenticated()) {
-    db.collection('user').find().toArray((err, result) => {
-        if (err) return console.log(err)
-        // console.log(req.user);
-        for (var i = 0, ilen = result.length; i < ilen; i++) {
-          for (var j = 0, jlen = req.user.emails.length; j < jlen; j++) {
-            db_user = result[i].user;
-            req_user = req.user.emails[j].value;
-            console.log("Found users: "+db_user+", and: "+req_user);
-            if(db_user==req_user){
-              auth=true;
-              console.log("Success! Found users: "+db_user+", and: "+req_user);
-              console.log("checkAuth:"+auth);
-              // return callback(auth);
-            }
-          }
-        }
-        return callback(auth);
+  //   db.collection('user').find().toArray((err, result) => {
+  //       if (err) return console.log(err)
+  //       // console.log(req.user);
+  //       for (var i = 0, ilen = result.length; i < ilen; i++) {
+  //         for (var j = 0, jlen = req.user.emails.length; j < jlen; j++) {
+  //           db_user = result[i].user;
+  //           req_user = req.user.emails[j].value;
+  //           console.log("Found users: "+db_user+", and: "+req_user);
+  //           if(db_user==req_user){
+  //             auth=true;
+  //             console.log("Success! Found users: "+db_user+", and: "+req_user);
+  //             console.log("checkAuth:"+auth);
+  //             // return callback(auth);
+  //           }
+  //         }
+  //       }
+  //       return callback(auth);
         
-      });
+  //     });
+    return req.user.emails[0].value;
   }
   
 }

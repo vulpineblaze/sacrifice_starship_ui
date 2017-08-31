@@ -211,6 +211,36 @@ $(document).ready(function() {
   </div>
 
 
+
+<div><% for(var i=0; i<emails.length; i++) {%>
+        <div><%= emails[i] %></div>
+    <% } %></div>
+
+
+  <div class="add_container">
+    <h2>add email to ship</h2>
+      <div class="add_left_col">
+         <br> 
+        Title  <br>
+        Text
+
+      </div>
+
+
+      <div class="add_right_col">
+
+        <form action="/add_email_ship-<%= this_ship.guid %>" method="POST" >
+          <button type="submit">Submit</button><br>
+
+            <input type="email" name="email"><br>
+        </form>
+
+      </div>
+  </div>
+
+
+
+
 <% } else { %>
 
   <div ><a href="/auth/google">google</a>  </div>
