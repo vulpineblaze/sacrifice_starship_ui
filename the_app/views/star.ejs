@@ -69,13 +69,13 @@
       <%if (msgs[i].visible) { %>
         <div id="<%= msgs[i].guid %>" class="text_container">
           <p><%= msgs[i].text %> </p>
-          <a href="/star_msg-<%= msgs[i].guid %>">Edit</a>
+          <p><a href="/star_msg-<%= msgs[i].guid %>">Edit</a></p>
         </div>
         <% }else{ %>
           <%if (auth) { %>
             <div id="<%= msgs[i].guid %>" class="text_container">
               <p><%= msgs[i].text %> </p>
-              <a href="/star_msg-<%= msgs[i].guid %>">Edit</a>
+              <p><a href="/star_msg-<%= msgs[i].guid %>">Edit</a></p>
             </div>
           <% } %>
         <% } %>
@@ -95,18 +95,10 @@
   <div class="add_container">
     <h2>Create a planet</h2>
 
-    <!-- 
-      <h4>
-      User   <input type="text" placeholder="u/user_name/" name="user"><br>
-      Star ID   <input type="text" placeholder="0000:0000:0000:0000" name="id"><br>
-      Current Star Name   <input type="text" placeholder="[HUB-X-00] coolname [stuff]" name="name"><br>
-      Star Class   <input type="text" placeholder="F9pf" name="class"><br>
-      Occupying Race   <input type="text" placeholder="Gek" name="race"><br>
-      What was interesting?   <input type="text" placeholder="Ce, Te, Sp, DynRes, Lush, Diplo" name="tags"></h4> -->
-
-      <div class="add_left_col">
-         <br> 
-        Title  <br>
+        <div class="add_left_col">
+         
+        Submit <div></div>
+        Name <div></div>
         Text
 
       </div>
@@ -132,7 +124,8 @@
 
       <div class="add_left_col">
          <br> 
-        Title  <br>
+        Submit <div></div>
+        Visible <div></div>
         Text
 
       </div>
@@ -160,8 +153,12 @@
     <h2>Edit this star</h2>
       <div class="add_left_col">
          <br> 
-        Title  <br>
-        Text
+        Name <div></div>
+        Constellation <div></div>
+        X-Coord <div></div>
+        Y-Coord <div></div>
+        Text 
+
 
       </div>
 
@@ -175,7 +172,7 @@
             <input type="text" value="<%= this_star.region %>" name="region"><br>
             <input type="number" value="<%= this_star.x %>" name="x"><br>
             <input type="number" value="<%= this_star.y %>" name="y"><br>
-            <input type="text" value="<%= this_star.campaign %>" name="campaign"><br>
+            <div id="star" style="display: none;"><input type="text" value="<%= this_star.campaign %>" name="campaign"><br></div>
             <textarea name="text" cols="40" rows="5"><%= this_star.text %></textarea>
         </form>
 
