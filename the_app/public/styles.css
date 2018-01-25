@@ -57,6 +57,7 @@ html {
     float: left;
     font-size: 21px;
     font-weight: bold;
+    text-align:right;
 }
 .add_right_col {
     width: 70%;
