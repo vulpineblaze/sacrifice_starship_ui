@@ -102,7 +102,7 @@
 
 
     <% for(var i=0; i<stars.length; i++) {%>
-        <a href="campaign-<%= campaign %>/star-<%= stars[i].guid %>"><%= stars[i].name %> <%= stars[i].region %></a> : <%= stars[i].text %>
+        <P><a href="campaign-<%= campaign %>/star-<%= stars[i].guid %>"><%= stars[i].name %> <%= stars[i].region %></a> : <%= stars[i].text %></P>
     <% } %>
   <% } %>
 </div>
@@ -114,7 +114,7 @@
 
 
     <% for(var i=0; i<ships.length; i++) {%>
-        <a href="campaign-<%= campaign %>/ship-<%= ships[i].guid %>"><%= ships[i].name %></a> : <%= ships[i].text %>
+        <P><a href="campaign-<%= campaign %>/ship-<%= ships[i].guid %>"><%= ships[i].name %></a> : <%= ships[i].text %></P>
     <% } %>
   <% } %>
 </div>
