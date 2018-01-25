@@ -50,8 +50,9 @@
   <div class="add_container">
     <h2>Edit this message</h2>
       <div class="add_left_col">
-         <br> 
-        Title  <br>
+
+        Submit  <br>
+        Visible  <br>
         Text
 
       </div>
@@ -66,7 +67,7 @@
             <% } else { %>
               <input type="checkbox"  name="visible"><br>
             <% } %>
-            <input type="text" value="<%= msg.planet %>" name="planet"><br>
+            <div id="msg" style="display: none;"><input type="text" value="<%= msg.planet %>" name="planet"><br></div>
             <textarea name="text" cols="40" rows="5"><%= msg.text %></textarea>
         </form>
 
