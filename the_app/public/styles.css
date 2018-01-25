@@ -36,6 +36,7 @@ html {
     padding: 10px; 
     margin: 25px; 
     width: 500px;
+	overflow:hidden;
 }
 /*.add_left_col {
     background: #e8f6fe;
