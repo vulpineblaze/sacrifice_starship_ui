@@ -136,7 +136,10 @@
     <h2>Create a star</h2>
       <div class="add_left_col">
          <br> 
-        Title  <br>
+        Letter  <br>
+        Constellation  <br>
+        X-coord  <br>
+        Y-coord  <br>
         Text
 
       </div>
@@ -147,7 +150,7 @@
         <form action="/campaign-<%= campaign %>/star" method="POST" >
           <button type="submit">Submit</button><br>
 
-            <input type="text" placeholder="c01s01" name="name"><br><br>
+            <input type="text" placeholder="alpha" name="name"><br>
             <input type="text" placeholder="centauri" name="region"><br>
             <input type="number" placeholder="1" name="x"><br>
             <input type="number" placeholder="1" name="y"><br>
@@ -164,7 +167,7 @@
     <h2>Create a ship</h2>
       <div class="add_left_col">
          <br> 
-        Title  <br>
+        Name  <br>
         Text
 
       </div>
@@ -175,7 +178,7 @@
         <form action="/campaign-<%= campaign %>/ship" method="POST" >
           <button type="submit">Submit</button><br>
 
-            <input type="text" placeholder="SS Sacrifice" name="name"><br><br>
+            <input type="text" placeholder="SS Sacrifice" name="name"><br>
             <div id="campaign" style="display: none;"><input type="text" value="<%= campaign %>" name="campaign">
             <input type="email" name="email" value="<%= auth %>"><br> </div>
             <textarea name="text" cols="40" rows="5"></textarea>
@@ -193,8 +196,7 @@
     <h2>Edit this campaign</h2>
       <div class="add_left_col">
          <br> 
-        Title  <br>
-        Text
+        Name  <br>
 
       </div>
 
@@ -212,9 +214,7 @@
     
   </div>
 
-<div><% for(var i=0; i<emails.length; i++) {%>
-        <div><%= emails[i] %></div>
-    <% } %></div>
+
 
 
   <div class="add_container">
@@ -237,6 +237,14 @@
 
       </div>
   </div>
+  
+  <div class="text_container">
+      <p> Existing Users: </p>
+    <% for(var i=0; i<emails.length; i++) {%>
+        <P><%= emails[i] %></P>
+    <% } %>
+  </div>
+    
 <div style="clear: both;"></div>
 
 <% } else { %>
