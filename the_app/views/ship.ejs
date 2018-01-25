@@ -125,58 +125,62 @@ $(document).ready(function() {
 
 
   <div class="add_container">
-    <h2>Create an item</h2>
-
-    <!-- 
-      <h4>
-      User   <input type="text" placeholder="u/user_name/" name="user"><br>
-      Star ID   <input type="text" placeholder="0000:0000:0000:0000" name="id"><br>
-      Current Star Name   <input type="text" placeholder="[HUB-X-00] coolname [stuff]" name="name"><br>
-      Star Class   <input type="text" placeholder="F9pf" name="class"><br>
-      Occupying Race   <input type="text" placeholder="Gek" name="race"><br>
-      What was interesting?   <input type="text" placeholder="Ce, Te, Sp, DynRes, Lush, Diplo" name="tags"></h4> -->
-
+    <h2>Create another item</h2>
+ 
+ 
       <div class="add_left_col">
-         <br> 
-        Title  <br>
-        Text
-
+         <div></div>
+        Submit  <div></div>
+        Name  <div></div>
+        Cost  <div></div>
+        Type  <div></div>
+        Health <div></div>
+        Armor <div></div>
+        Repair Cost <div></div>
+        Damage <div></div>
+        Armor Piercing <div></div>
+        Range <div></div>
+        Max Charge <div></div>
+        EU/hour <div></div>
+        Acceleration <div></div>
+        Speed <div></div>
+        xPort <div></div>
+        iPort <div></div>
+        Description
       </div>
-
-
       <div class="add_right_col">
-
-        <form action="/campaign-<%= campaign %>/ship-<%= this_ship.guid %>/item" method="POST" >
-          <button type="submit">Submit</button><br>
-            <input type="text" placeholder="item" name="name">
-            <div id="ship" style="display: none;"><input type="text" value="<%= this_ship.guid %>" name="ship"></div>
-            <textarea name="text" cols="40" rows="5"></textarea>
+        <form action="/campaign-<%= campaign %>/ship-<%= this_item.ship %>/item" method="POST" >
+          <div><button type="submit">Submit</button> <BR></div> 
+            <input type="text" placeholder="c01s01" name="name">
+            <input type="number" placeholder="1" name="cost">
+            <div></div>
             <select name="type">
               <option value="Weapon">Weapon</option>
               <option value="Armor">Armor</option>
               <option value="Power">Power</option>
               <option value="Drive">Drive</option>
               <option value="Other">Other</option>
-            </select>
-
-            <input type="number" placeholder="0" name="health">
-            <input type="number" placeholder="0" name="armor">
-            <input type="number" placeholder="0" name="repaircost">
-            <input type="number" placeholder="0" name="damage">
-            <input type="number" placeholder="0" name="ap">
-            <input type="number" placeholder="0" name="range">
-            <input type="number" placeholder="0" name="maxcharge">
-            <input type="number" placeholder="0" name="euh">
-            <input type="number" placeholder="0" name="acc">
-            <input type="number" placeholder="0" name="speed">
-            <input type="number" placeholder="0" name="xport">
-            <input type="number" placeholder="0" name="iport">
-            <input type="number" placeholder="1" name="cost">
-
+            </select>       
+         <div></div>
+            
+            <input type="number" placeholder="1" name="health">
+            <input type="number" placeholder="1" name="armor">
+            <input type="number" placeholder="1" name="repaircost">
+            <input type="number" placeholder="1" name="damage">
+            <input type="number" placeholder="1" name="ap">
+            <input type="number" placeholder="1" name="range">
+            <input type="number" placeholder="1" name="maxcharge">
+            <input type="number" placeholder="1" name="euh">
+            <input type="number" placeholder="1" name="acc">
+            <input type="number" placeholder="1" name="speed">
+            <input type="number" placeholder="1" name="xport">
+            <input type="number" placeholder="1" name="iport">
+            <textarea name="text" cols="40" rows="5"></textarea>
+            <div id="ship" style="display: none;"><input type="text" value="<%= this_item.ship %>" name="ship"></div>
+            
+            
         </form>
-
       </div>
-
     
   </div>
 
@@ -189,7 +193,8 @@ $(document).ready(function() {
     <h2>Edit this ship</h2>
       <div class="add_left_col">
          <br> 
-        Title  <br>
+        Submit  <div></div>
+        Name  <div></div>
         Text
 
       </div>
@@ -201,7 +206,8 @@ $(document).ready(function() {
           <button type="submit">Submit</button><br>
 
             <input type="text" value="<%= this_ship.name %>" name="name"><br>
-            <input type="text" value="<%= this_ship.campaign %>" name="campaign"><br>
+            <div id="ship" style="display: none;"><input type="text" value="<%= this_ship.campaign %>" name="campaign"></div>
+            
             <textarea name="text" cols="40" rows="5"><%= this_ship.text %></textarea>
         </form>
 
@@ -218,7 +224,7 @@ $(document).ready(function() {
 
 
   <div class="add_container">
-    <h2>add email to ship</h2>
+    <h2>Add User to ship</h2>
       <div class="add_left_col">
          <br> 
         Title  <br>
@@ -232,7 +238,7 @@ $(document).ready(function() {
         <form action="/add_email_ship-<%= this_ship.guid %>" method="POST" >
           <button type="submit">Submit</button><br>
 
-            <input type="email" name="email"><br>
+            <input type="text" name="email"><br>
         </form>
 
       </div>
