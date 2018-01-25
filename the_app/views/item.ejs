@@ -116,7 +116,7 @@ $(document).ready(function() {
               <option value="Power">Power</option>
               <option value="Drive">Drive</option>
               <option value="Other">Other</option>
-            </select>  <pre></pre>        
+            </select>       
             
             <input type="number" placeholder="1" name="health">
             <input type="number" placeholder="1" name="armor">
@@ -174,18 +174,20 @@ $(document).ready(function() {
       <div class="add_right_col">
 
         <form action="/update_item-<%= this_item.guid %>" method="POST" >
-          <button type="submit">Submit</button><br>
+          <div><button type="submit">Submit</button> <BR></div> 
 
             <input type="text" value="<%= this_item.name %>" name="name"><br>
 
             <input type="number" value="<%= this_item.cost %>"  name="cost">
+            <div></div>
+            
             <select name="type">
               <option value="Weapon">Weapon</option>
               <option value="Armor">Armor</option>
               <option value="Power">Power</option>
               <option value="Drive">Drive</option>
               <option value="Other">Other</option>
-            </select><pre></pre>
+            </select>
 
             <input type="number" value="<%= this_item.health %>"  name="health">
             <input type="number" value="<%= this_item.armor %>"  name="armor">
