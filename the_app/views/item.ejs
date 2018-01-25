@@ -86,6 +86,7 @@ $(document).ready(function() {
         Submit  <div></div>
         Name  <div></div>
         Cost  <div></div>
+        Type  <div></div>
         Health <div></div>
         Armor <div></div>
         Repair Cost <div></div>
@@ -108,7 +109,6 @@ $(document).ready(function() {
           <div><button type="submit">Submit</button> <BR></div> 
             <input type="text" placeholder="c01s01" name="name">
             <input type="number" placeholder="1" name="cost">
-            <div id="ship" style="display: none;"><input type="text" value="<%= this_item.ship %>" name="ship"></div>
             <select name="type">
               <option value="Weapon">Weapon</option>
               <option value="Armor">Armor</option>
@@ -130,6 +130,7 @@ $(document).ready(function() {
             <input type="number" placeholder="1" name="xport">
             <input type="number" placeholder="1" name="iport">
             <textarea name="text" cols="40" rows="5"></textarea>
+            <div id="ship" style="display: none;"><input type="text" value="<%= this_item.ship %>" name="ship"></div>
             
             
         </form>
@@ -152,6 +153,7 @@ $(document).ready(function() {
         Submit  <div></div>
         Name  <div></div>
         Cost  <div></div>
+        Type  <div></div>
         Health <div></div>
         Armor <div></div>
         Repair Cost <div></div>
@@ -174,7 +176,6 @@ $(document).ready(function() {
           <button type="submit">Submit</button><br>
 
             <input type="text" value="<%= this_item.name %>" name="name"><br>
-            <div id="ship" style="display: none;"><input type="text" value="<%= this_item.ship %>" name="ship"></div>
 
             <input type="number" value="<%= this_item.cost %>"  name="cost">
             <select name="type">
@@ -198,6 +199,7 @@ $(document).ready(function() {
             <input type="number" value="<%= this_item.xport %>"  name="xport">
             <input type="number" value="<%= this_item.iport %>"  name="iport">
             <textarea name="text" cols="40" rows="5"><%= this_item.text %></textarea>
+            <div id="ship" style="display: none;"><input type="text" value="<%= this_item.ship %>" name="ship"></div>
             
         </form>
 
