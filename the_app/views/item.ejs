@@ -78,20 +78,14 @@ $(document).ready(function() {
   <div class="add_container">
     <h2>Create another item</h2>
 
-    <!-- 
-      <h4>
-      User   <input type="text" placeholder="u/user_name/" name="user"><br>
-      Star ID   <input type="text" placeholder="0000:0000:0000:0000" name="id"><br>
-      Current Star Name   <input type="text" placeholder="[HUB-X-00] coolname [stuff]" name="name"><br>
-      Star Class   <input type="text" placeholder="F9pf" name="class"><br>
-      Occupying Race   <input type="text" placeholder="Gek" name="race"><br>
-      What was interesting?   <input type="text" placeholder="Ce, Te, Sp, DynRes, Lush, Diplo" name="tags"></h4> -->
+ 
+ 
 
       <div class="add_left_col">
          <div></div>
         Submit  <div></div>
         Name  <div></div>
-        Description  <div></div> <BR> <div></div> <BR> <div></div>
+        Cost  <div></div>
         Health <div></div>
         Armor <div></div>
         Repair Cost <div></div>
@@ -104,7 +98,7 @@ $(document).ready(function() {
         Speed <div></div>
         xPort <div></div>
         iPort <div></div>
-        Cost
+        Description
       </div>
 
 
@@ -113,8 +107,8 @@ $(document).ready(function() {
         <form action="/campaign-<%= campaign %>/ship-<%= this_item.ship %>/item" method="POST" >
           <div><button type="submit">Submit</button> <BR></div> 
             <input type="text" placeholder="c01s01" name="name">
+            <input type="number" placeholder="1" name="cost">
             <div id="ship" style="display: none;"><input type="text" value="<%= this_item.ship %>" name="ship"></div>
-            <textarea name="text" cols="40" rows="5"></textarea>
             <select name="type">
               <option value="Weapon">Weapon</option>
               <option value="Armor">Armor</option>
@@ -135,7 +129,8 @@ $(document).ready(function() {
             <input type="number" placeholder="1" name="speed">
             <input type="number" placeholder="1" name="xport">
             <input type="number" placeholder="1" name="iport">
-            <input type="number" placeholder="1" name="cost">
+            <textarea name="text" cols="40" rows="5"></textarea>
+            
             
         </form>
 
@@ -156,7 +151,7 @@ $(document).ready(function() {
          <div></div>
         Submit  <div></div>
         Name  <div></div>
-        Description  <div></div><div></div><div></div>
+        Cost  <div></div>
         Health <div></div>
         Armor <div></div>
         Repair Cost <div></div>
@@ -169,7 +164,7 @@ $(document).ready(function() {
         Speed <div></div>
         xPort <div></div>
         iPort <div></div>
-        Cost
+        Description
       </div>
 
 
@@ -179,15 +174,16 @@ $(document).ready(function() {
           <button type="submit">Submit</button><br>
 
             <input type="text" value="<%= this_item.name %>" name="name"><br>
-            <input type="text" value="<%= this_item.ship %>" name="ship"><br>
-            <textarea name="text" cols="40" rows="5"><%= this_item.text %></textarea>
+            <div id="ship" style="display: none;"><input type="text" value="<%= this_item.ship %>" name="ship"></div>
+
+            <input type="number" value="<%= this_item.cost %>"  name="cost">
             <select name="type">
               <option value="Weapon">Weapon</option>
               <option value="Armor">Armor</option>
               <option value="Power">Power</option>
               <option value="Drive">Drive</option>
               <option value="Other">Other</option>
-            </select>
+            </select><pre></pre>
 
             <input type="number" value="<%= this_item.health %>"  name="health">
             <input type="number" value="<%= this_item.armor %>"  name="armor">
@@ -201,7 +197,7 @@ $(document).ready(function() {
             <input type="number" value="<%= this_item.speed %>"  name="speed">
             <input type="number" value="<%= this_item.xport %>"  name="xport">
             <input type="number" value="<%= this_item.iport %>"  name="iport">
-            <input type="number" value="<%= this_item.cost %>"  name="cost">
+            <textarea name="text" cols="40" rows="5"><%= this_item.text %></textarea>
             
         </form>
 
