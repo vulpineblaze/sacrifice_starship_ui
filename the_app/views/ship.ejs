@@ -187,6 +187,7 @@ $(document).ready(function() {
 
 
 
+<div style="clear: both;"></div>
 
 
 
@@ -205,6 +206,7 @@ $(document).ready(function() {
 
         <form action="/update_ship-<%= this_ship.guid %>" method="POST" >
           <button type="submit">Submit</button><br>
+          <div></div>
 
             <input type="text" value="<%= this_ship.name %>" name="name"><br>
             <div id="ship" style="display: none;"><input type="text" value="<%= this_ship.campaign %>" name="campaign"></div>
@@ -219,20 +221,18 @@ $(document).ready(function() {
 
 
 
-<div><% for(var i=0; i<emails.length; i++) {%>
-        <div><%= emails[i] %></div>
-    <% } %></div>
+
+<div style="clear: both;"></div>
+
 
 
   <div class="add_container">
     <h2>Add User to ship</h2>
       <div class="add_left_col">
          <br> 
-        Title  <br>
-        Text
+        User:
 
       </div>
-
 
       <div class="add_right_col">
 
@@ -245,7 +245,16 @@ $(document).ready(function() {
       </div>
   </div>
 
-
+<div style="clear: both;"></div>
+  
+  <div class="add_container">
+      <h2> Existing Users: </h2>
+    <% for(var i=0; i<emails.length; i++) {%>
+        <P><%= emails[i] %></P>
+    <% } %>
+  </div>
+    
+<div style="clear: both;"></div>
 
 
 <% } else { %>
