@@ -125,7 +125,7 @@ $(document).ready(function() {
 
 
   <div class="add_container">
-    <h2>Create another item</h2>
+    <h2>Create an item</h2>
  
  
       <div class="add_left_col">
@@ -149,7 +149,7 @@ $(document).ready(function() {
         Description
       </div>
       <div class="add_right_col">
-        <form action="/campaign-<%= campaign %>/ship-<%= this_item.ship %>/item" method="POST" >
+        <form action="/campaign-<%= campaign %>/ship-<%= this_ship.guid %>/item" method="POST" >
           <div><button type="submit">Submit</button> <BR></div> 
             <input type="text" placeholder="c01s01" name="name">
             <input type="number" placeholder="1" name="cost">
