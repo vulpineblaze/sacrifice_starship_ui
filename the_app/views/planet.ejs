@@ -48,13 +48,13 @@
       <%if (msgs[i].visible) { %>
         <div id="<%= msgs[i].guid %>" class="text_container">
           <p><%= msgs[i].text %> </p>
-          <a href="/planet_msg-<%= msgs[i].guid %>">Edit</a>
+          <p><a href="/planet_msg-<%= msgs[i].guid %>">Edit</a></p>
         </div>
         <% }else{ %>
           <%if (auth) { %>
             <div id="<%= msgs[i].guid %>" class="text_container">
               <p><%= msgs[i].text %> </p>
-          <a href="/planet_msg-<%= msgs[i].guid %>">Edit</a>
+          <P><a href="/planet_msg-<%= msgs[i].guid %>">Edit</a></P>
             </div>
           <% } %>
         <% } %>
@@ -78,18 +78,9 @@
   <div class="add_container">
     <h2>Create another planet</h2>
 
-    <!-- 
-      <h4>
-      User   <input type="text" placeholder="u/user_name/" name="user"><br>
-      Star ID   <input type="text" placeholder="0000:0000:0000:0000" name="id"><br>
-      Current Star Name   <input type="text" placeholder="[HUB-X-00] coolname [stuff]" name="name"><br>
-      Star Class   <input type="text" placeholder="F9pf" name="class"><br>
-      Occupying Race   <input type="text" placeholder="Gek" name="race"><br>
-      What was interesting?   <input type="text" placeholder="Ce, Te, Sp, DynRes, Lush, Diplo" name="tags"></h4> -->
-
       <div class="add_left_col">
          <br> 
-        Title  <br>
+        Name<br>
         Text
 
       </div>
@@ -99,7 +90,7 @@
 
         <form action="/campaign-<%= campaign %>/star-<%= star %>/planet" method="POST" >
           <button type="submit">Submit</button><br>
-            <input type="text" placeholder="c01s01" name="name"><br>
+            <input type="text" placeholder="beta" name="name"><br>
             <div id="star" style="display: none;"><input type="text" value="<%= star %>" name="star"></div>
             <textarea name="text" cols="40" rows="5"></textarea>
         </form>
@@ -117,7 +108,8 @@
 
       <div class="add_left_col">
          <br> 
-        Title  <br>
+        Submit<br>
+        Visible<br>
         Text
 
       </div>
@@ -144,7 +136,7 @@
     <h2>Edit this planet</h2>
       <div class="add_left_col">
          <br> 
-        Title  <br>
+        Name  <br>
         Text
 
       </div>
@@ -156,7 +148,7 @@
           <button type="submit">Submit</button><br>
 
             <input type="text" value="<%= this_planet.name %>" name="name"><br>
-            <input type="text" value="<%= this_planet.star %>" name="star"><br>
+            <div id="planet" style="display: none;"><input type="text" value="<%= this_planet.star %>" name="star"><br></div>
             <textarea name="text" cols="40" rows="5"><%= this_planet.text %></textarea>
         </form>
 
