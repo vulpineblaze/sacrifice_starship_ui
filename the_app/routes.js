@@ -625,8 +625,17 @@ function checkAuth(req, res, next, db, callback){
   //       return callback(auth);
         
   //     });
-    console.log(req.user);
-    return req.user.username;
+//     console.log(req.user);
+    var ret_val;
+    if(req.user.username){
+      ret_val = req.user.username;
+    }else if(req.user.displayName){
+      ret_val = req.user.displayName;
+    }else{
+      console.log("Auth failed:"+req.user);
+      ret_val = fail; 
+    }
+    return ret_val;
   }
   
 }
