@@ -33,7 +33,7 @@ var GithubStrategy = require('passport-github').Strategy;
 passport.use(new GithubStrategy({
     clientID: "336a5eeb8d5737cb3fb8",
     clientSecret: "845931607e310294372a914fb4f51c89e6f70e05",
-    callbackURL: "http://starship_ui.fusionbombsderp.com/auth/github/callback"
+    callbackURL: "http://starship.fusionbombsderp.com/auth/github/callback"
   },
   function(accessToken, refreshToken, profile, done) {
     return done(null, profile);
@@ -46,9 +46,9 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 passport.use(new GoogleStrategy({
     clientID: "895194748840-0obsr8rrlogq3k5l89j5s4437865vtgh.apps.googleusercontent.com",
     clientSecret: "WpPWnCeFNiZFxuQM36r66pCx",
-    callbackURL: "http://starship_ui.fusionbombsderp.com/auth/google/callback",
-    returnURL: 'http://starship_ui.fusionbombsderp.com/auth/google/return',
-    realm: 'http://starship_ui.fusionbombsderp.com'
+    callbackURL: "http://starship.fusionbombsderp.com/auth/google/callback",
+    returnURL: 'http://starship.fusionbombsderp.com/auth/google/return',
+    realm: 'http://starship.fusionbombsderp.com'
   },
   function(accessToken, refreshToken, profile, done) {
     return done(null, profile);
