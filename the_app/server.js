@@ -11,7 +11,7 @@ var the_port = 3002;
 
 var db
 var configDB = require('./config/database.js');
-var root_dir = "http://starship_ui.fusionbombsderp.com";
+var root_dir = "http://starship.fusionbombsderp.com";
 
 
 app.use(session({secret: "-- ENTER CUSTOM SESSION SECRET --"}));
