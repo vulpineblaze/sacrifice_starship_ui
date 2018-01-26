@@ -625,7 +625,7 @@ function checkAuth(req, res, next, db, callback){
   //       return callback(auth);
         
   //     });
-    console.log(user);
+    console.log(req.user);
     return req.user.username;
   }
   
