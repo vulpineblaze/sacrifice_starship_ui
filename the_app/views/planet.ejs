@@ -54,7 +54,8 @@
           <%if (auth) { %>
             <div id="<%= msgs[i].guid %>" class="text_container">
               <p><%= msgs[i].text %> </p>
-          <P><a href="/planet_msg-<%= msgs[i].guid %>">Edit</a></P>
+          <P><a href="/planet_msg-<%= msgs[i].guid %>">Edit</a>
+          <a href="/delete_planet_msg-<%= msgs[i].guid %>/<%= msgs[i].planet %>">Delete</a></P>
             </div>
           <% } %>
         <% } %>

@@ -48,7 +48,7 @@
         <p><a href="star-<%= this_star.guid %>/planet-<%= planets[i].guid %>"><%= planets[i].name %></a>
         <BR>
         <%= planets[i].text %></P>
-
+        <a href="/delete_planet-<%= planets[i].guid %>/<%= this_star.guid %>">Delete</a></P>
       </div>
       
 
@@ -75,7 +75,11 @@
           <%if (auth) { %>
             <div id="<%= msgs[i].guid %>" class="text_container">
               <p><%= msgs[i].text %> </p>
-              <p><a href="/star_msg-<%= msgs[i].guid %>">Edit</a></p>
+              <p><a href="/star_msg-<%= msgs[i].guid %>">Edit</a>
+              <a href="/delete_star_msg-<%= msgs[i].guid %>/<%= msgs[i].star %>">Delete</a>
+              
+              </p>
+
             </div>
           <% } %>
         <% } %>

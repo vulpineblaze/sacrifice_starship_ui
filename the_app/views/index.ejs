@@ -31,7 +31,7 @@
 <div class="temp_disclaimer">Hope Of Arilon: Full Chapters can also be found: <a href="https://www.fictionpress.com/s/3305220/1/Hope-of-Arilon-tk">On FictionPress</a> and <a href="https://www.wattpad.com/story/106472223">On Wattpad</a> </div>
 <div class="temp_disclaimer">Ruleset can be found here: <a href="http://sacrifice.fusionbombsderp.com">sacrifice.wikia.com</a> </div>
 
-
+<P>Welcome, <%= auth %></P>
 
 <div class="line"></div>
 
@@ -52,7 +52,8 @@
     <% for(var i=0; i<campaigns.length; i++) {%>
       <div id="<%= campaigns[i].name %>" class="text_container">
         <!-- <div class="title"><%= campaigns[i].title %></div>   -->
-        <p><a href="campaign-<%= campaigns[i].guid %>"><%= campaigns[i].name %></a> </p>
+        <p><a href="campaign-<%= campaigns[i].guid %>"><%= campaigns[i].name %></a> 
+        <a href="/delete_campaign-<%= campaigns[i].guid %>">Delete</a></p>
 
 
       </div>
@@ -80,8 +81,8 @@
 
       <div class="add_left_col">
          <br> 
-        Title  <br>
-        Text
+        Name  <br>
+        
 
       </div>
 
@@ -91,7 +92,7 @@
         <form action="/campaigns" method="POST" >
           <button type="submit">Submit</button><br>
             <input type="text" placeholder="c01s01" name="name"><br>
-            <div id="campaign" style="display: none;"><input type="email" name="email" value="<%= auth %>"><br> </div>
+            <div id="campaign" style="display: none;"><input type="text" name="email" value="<%= auth %>"><br> </div>
 <!--             <textarea name="text" cols="40" rows="5"></textarea>
  -->        </form>
 

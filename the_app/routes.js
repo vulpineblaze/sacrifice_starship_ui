@@ -1,6 +1,17 @@
 const crypto = require("crypto");
 const gen = require("./generator.js");
 
+var fs = require('fs');
+var util = require('util');
+var log_file = fs.createWriteStream(__dirname + '/debug.log', {flags : 'w'});
+var log_stdout = process.stdout;
+
+console.log = function(d) { //
+  log_file.write(util.format(d) + '\n');
+  log_stdout.write(util.format(d) + '\n');
+};
+
+
 module.exports = function(app, passport, db) {
 
 
@@ -56,15 +67,18 @@ module.exports = function(app, passport, db) {
       
       db.collection('ships').find({campaign:req.params.guid,email:auth}).toArray((err, result) => {
         var ships =result;
-        db.collection('stars').find({campaign:req.params.guid}).toArray((err, result) => {
-          if (err) return console.log(err)
-          res.render('campaign.ejs', {stars: result, 
-                                      ships:ships, 
-                                      auth:auth, 
-                                      campaign:req.params.guid,
-                                      c_name:name,
-                                      emails:emails
-                                    })
+        db.collection('stars').find({campaign:req.params.guid}).toArray((err, stars) => {
+          db.collection('planets').find({star:stars[0].guid}).toArray((err, planets) => {
+            if (err) return console.log(err)
+            res.render('campaign.ejs', {stars: stars, 
+                                        ships:ships, 
+                                        planets:planets, 
+                                        auth:auth, 
+                                        campaign:req.params.guid,
+                                        c_name:name,
+                                        emails:emails
+                                      })
+          })
         })
       })
     })
@@ -163,7 +177,10 @@ module.exports = function(app, passport, db) {
   app.get('/planet-:puid', (req, res, next) => {
 
     db.collection('planets').find({guid:req.params.puid}).toArray((err, p) => {
+      // console.log(p);
       db.collection('stars').find({guid:p[0].star}).toArray((err, s) => {
+      // console.log(s);
+
         res.redirect('/campaign-'+s[0].campaign+'/star-'+p[0].star+'/planet-'+req.params.puid)
 
       })
@@ -256,7 +273,7 @@ module.exports = function(app, passport, db) {
     db.collection('campaigns').save(req.body, (err, result) => {
       if (err) return console.log(err)
       console.log('saved to database')
-      res.redirect('/')
+      res.redirect('/campaign-'+req.body.guid)
     })
   })
 
@@ -539,13 +556,124 @@ module.exports = function(app, passport, db) {
   //     res.send('A darth vadar quote got deleted')
   //   })
   // })
+  // app.delete('/hoa', (req, res) => {
+  //   db.collection('hoa').findOneAndDelete({guid: req.body.guid}, (err, result) => {
+  //     if (err) return res.send(500, err)
+  //     res.send('A darth vadar quote got deleted')
+  //   })
+  // })
 
-  app.get('/delete-:guid', (req, res) => {
-    db.collection('hoa').findOneAndDelete({guid: req.params.guid}, (err, result) => {
+  app.get('/delete_planet_msg-:muid/:puid', (req, res) => {
+    // console.log(req.params);
+    db.collection('planet_msg').findOneAndDelete({guid: req.params.muid}, (err, result) => {
+      // console.log(result);
+      // console.log(req.params);
+      if (err) return res.send(500, err)
+      res.redirect('/planet-'+req.params.puid)
+    })
+  })
+
+
+  app.get('/delete_planet-:puid/:suid', (req, res) => {
+    // console.log(req.params);
+    db.collection('planet_msg').deleteMany({planet: req.params.puid}, (err, result) => {
+      // console.log(result);
+      // console.log(req.params);
+      if (err) return res.send(500, err)
+      // res.redirect('/planet-'+req.params.puid)
+    })
+    db.collection('planets').findOneAndDelete({guid: req.params.puid}, (err, result) => {
+      // console.log(result);
+      // console.log(req.params);
+      if (err) return res.send(500, err)
+      res.redirect('/star-'+req.params.suid)
+    })
+  })
+
+  app.get('/delete_star_msg-:muid/:suid', (req, res) => {
+    // console.log(req.params);
+    db.collection('star_msg').findOneAndDelete({guid: req.params.muid}, (err, result) => {
+      // console.log(result);
+      // console.log(req.params);
+      if (err) return res.send(500, err)
+      res.redirect('/star-'+req.params.suid)
+    })
+  })
+
+  app.get('/delete_star-:suid/:cuid', (req, res) => {
+    // console.log(req.params);
+    db.collection('planets').find({star:req.params.suid}).toArray((err, p) => {
+      // console.log(p);
+      for (var i = 0; i < p.length; i++) {
+        db.collection('planet_msg').deleteMany({planet: p[i].guid}, (err, result) => {
+          if (err) return res.send(500, err)
+        })
+     } 
+    })
+    
+    db.collection('planets').deleteMany({star: req.params.suid}, (err, result) => {
+      // console.log(result);
+      // console.log(req.params);
+      if (err) return res.send(500, err)
+      // res.redirect('/campaign-'+req.params.cuid)
+    })
+
+    db.collection('star_msg').deleteMany({star: req.params.suid}, (err, result) => {
+      // console.log(result);
+      // console.log(req.params);
+      if (err) return res.send(500, err)
+      // res.redirect('/star-'+req.params.suid)
+    })
+    
+    db.collection('stars').findOneAndDelete({guid: req.params.suid}, (err, result) => {
+      // console.log(result);
+      // console.log(req.params);
+      if (err) return res.send(500, err)
+      res.redirect('/campaign-'+req.params.cuid)
+    })
+  })
+
+  app.get('/delete_campaign-:cuid', (req, res) => {
+    db.collection('ships').find({campaign:req.params.cuid}).toArray((err, h) => {
+      // console.log(p);
+      for (var i = 0; i < h.length; i++) {
+        db.collection('ships_items').deleteMany({ship: h[i].guid}, (err, result) => {
+          if (err) return res.send(500, err)
+        })
+      } 
+    })
+    db.collection('ships').deleteMany({campaign: req.params.cuid}, (err, result) => {
+      if (err) return res.send(500, err)
+    })
+    db.collection('stars').find({campaign:req.params.cuid}).toArray((err, s) => {
+      for(var i = 0; i < s.length; i++){
+        db.collection('star_msg').deleteMany({star: s[i].guid}, (err, result) => {
+          if (err) return res.send(500, err)
+        })
+        db.collection('planets').find({star:s[i].guid}).toArray((err, p) => {
+          // console.log(p);
+          for (var j = 0; j < p.length; j++) {
+            db.collection('planet_msg').deleteMany({planet: p[j].guid}, (err, result) => {
+              if (err) return res.send(500, err)
+            })
+          } 
+        })
+        db.collection('planets').deleteMany({star: s[i].guid}, (err, result) => {
+          if (err) return res.send(500, err)
+        })
+      }
+    })
+  
+    db.collection('stars').deleteMany({campaign: req.params.cuid}, (err, result) => {
+      if (err) return res.send(500, err)
+    })
+    db.collection('campaigns').deleteMany({guid: req.params.cuid}, (err, result) => {
       if (err) return res.send(500, err)
       res.redirect('/')
     })
   })
+
+
 
 
   app.get('/logout', function(req, res){
