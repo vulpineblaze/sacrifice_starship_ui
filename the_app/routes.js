@@ -68,7 +68,10 @@ module.exports = function(app, passport, db) {
       db.collection('ships').find({campaign:req.params.guid,email:auth}).toArray((err, result) => {
         var ships =result;
         db.collection('stars').find({campaign:req.params.guid}).toArray((err, stars) => {
-          db.collection('planets').find({star:stars[0].guid}).toArray((err, planets) => {
+          var star_guids = stars.map(function(a) {return a.guid;});
+          db.collection('planets').find({"star": {$in: star_guids}}).toArray((err, planets) => {
+            // console.log(planets);
+            // console.log(star_guids);
             if (err) return console.log(err)
             res.render('campaign.ejs', {stars: stars, 
                                         ships:ships, 

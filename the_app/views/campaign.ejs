@@ -98,23 +98,27 @@
     <P> Please add a star</P>
   <% }else{ %>
 
-      <div id="series_chart_div" style="width: 700px; height: 700px;"></div>
+    <div id="series_chart_div" style="width: 700px; height: 700px;"></div>
 
 
-    <% for(var i=0; i<stars.length; i++) {%>
-        <P><a href="campaign-<%= campaign %>/star-<%= stars[i].guid %>"><%= stars[i].name %> <%= stars[i].region %></a> : <%= stars[i].text %>
-        <a href="/delete_star-<%= stars[i].guid %>/<%= campaign %>">Delete</a>
-        </P>
-    <% } %>
-
-    <% for(var i=0; i<planets.length; i++) {%>
-        <P><a href="campaign-<%= campaign %>/star-<%= planets[i].guid %>"><%= planets[i].name %> : <%= planets[i].text %>
-        <!-- <a href="/delete_star-<%= stars[i].guid %>/<%= campaign %>">Delete</a> -->
-        </P>
-    <% } %>
-
+    <ul><% for(var i=0; i<stars.length; i++) {%>
+        <li><a href="campaign-<%= campaign %>/star-<%= stars[i].guid %>"><%= stars[i].name %> <%= stars[i].region %></a> : <%= stars[i].text %>
+        <a href="/delete_star-<%= stars[i].guid %>/<%= campaign %>">Delete</a></li>
+        <ul><% for(var j=0; j<planets.length; j++) {%>
+            <% if (stars[i].guid == planets[j].star){ %>
+              <li><a href="planet-<%= planets[j].guid %>"><%= planets[j].name %> : <%= planets[j].text %></a></li>
+        <% } %>
+      <% } %></ul>
+    <% } %></ul>
   <% } %>
 </div>
+
+
+
+<div style="clear: both;"></div>
+
+
+
 <div id="ships" class="text_container">
   <% if (ships.length == 0){ %>
     <P> Please add a ship</P>
