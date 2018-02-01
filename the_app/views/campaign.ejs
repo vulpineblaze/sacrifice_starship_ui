@@ -104,9 +104,23 @@
     <ul><% for(var i=0; i<stars.length; i++) {%>
         <li><a href="campaign-<%= campaign %>/star-<%= stars[i].guid %>"><%= stars[i].name %> <%= stars[i].region %></a> : <%= stars[i].text %>
         <a href="/delete_star-<%= stars[i].guid %>/<%= campaign %>">Delete</a></li>
-        <ul><% for(var j=0; j<planets.length; j++) {%>
+        <ul>
+          <% for(var j=0; j<star_msg.length; j++) {%>
+            <% if (stars[i].guid == star_msg[j].star){ %>
+              <li><%= star_msg[j].text %></li>
+            <% } %>
+          <% } %>
+          <% for(var j=0; j<planets.length; j++) {%>
             <% if (stars[i].guid == planets[j].star){ %>
               <li><a href="planet-<%= planets[j].guid %>"><%= planets[j].name %> : <%= planets[j].text %></a></li>
+              <ul>
+                <% for(var k=0; k<planet_msg.length; k++) {%>
+                  <% if (planets[j].guid == planet_msg[k].planet){ %>
+                    <!-- <%= planets[j].guid %>:<%= planet_msg[k].planet %> -->
+                    <li><%= planet_msg[k].text %></li>
+                  <% } %>
+                <% } %>    
+              </ul>
         <% } %>
       <% } %></ul>
     <% } %></ul>
@@ -271,9 +285,14 @@
     
 <div style="clear: both;"></div>
 
+<div ><a href="/auth/google-<%= campaign %>">Invite Link</a> for <%= c_name %> </div>
+
 <% } else { %>
 
   <P> Please sign in</P>
+
+  <!-- <div ><a href="/auth/google-<%= campaign %>">Invite Link</a> <%= campaign %> </div> -->
+
 
   <div ><a href="/auth/google">google</a>  </div>
   <div ><a href="/auth/github">github</a>  </div>

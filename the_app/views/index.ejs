@@ -53,6 +53,7 @@
       <div id="<%= campaigns[i].name %>" class="text_container">
         <!-- <div class="title"><%= campaigns[i].title %></div>   -->
         <p><a href="campaign-<%= campaigns[i].guid %>"><%= campaigns[i].name %></a> 
+        <a href="/auth/google-<%= campaigns[i].guid %>">Invite Link</a> 
         <a href="/delete_campaign-<%= campaigns[i].guid %>">Delete</a></p>
 
 

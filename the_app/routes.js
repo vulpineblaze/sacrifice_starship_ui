@@ -70,17 +70,22 @@ module.exports = function(app, passport, db) {
         db.collection('stars').find({campaign:req.params.guid}).toArray((err, stars) => {
           var star_guids = stars.map(function(a) {return a.guid;});
           db.collection('planets').find({"star": {$in: star_guids}}).toArray((err, planets) => {
-            // console.log(planets);
-            // console.log(star_guids);
-            if (err) return console.log(err)
-            res.render('campaign.ejs', {stars: stars, 
-                                        ships:ships, 
-                                        planets:planets, 
-                                        auth:auth, 
-                                        campaign:req.params.guid,
-                                        c_name:name,
-                                        emails:emails
-                                      })
+            db.collection('star_msg').find({"star": {$in: star_guids}}).toArray((err, star_msg) => {
+              var planet_guids = planets.map(function(a) {return a.guid;});
+              db.collection('planet_msg').find({"planet": {$in: planet_guids}}).toArray((err, planet_msg) => {
+                if (err) return console.log(err)
+                res.render('campaign.ejs', {stars: stars, 
+                                            ships:ships, 
+                                            planets:planets, 
+                                            star_msg:star_msg, 
+                                            planet_msg:planet_msg, 
+                                            auth:auth, 
+                                            campaign:req.params.guid,
+                                            c_name:name,
+                                            emails:emails
+                                          })
+              })
+            })
           })
         })
       })
@@ -681,6 +686,7 @@ module.exports = function(app, passport, db) {
 
   app.get('/logout', function(req, res){
     console.log('logging out');
+      console.log("oauth-"+req.session.oauth2return);
     req.logout();
     res.redirect('/');
   })
@@ -703,16 +709,73 @@ module.exports = function(app, passport, db) {
 
   app.get('/auth/google', passport.authenticate('google',{ scope : ['profile', 'email'] }));
   // app.get('/auth/google', passport.authenticate('google',{scope: 'https://www.googleapis.com/auth/plus.me https://www.google.com/m8/feeds https://www.googleapis.com/auth/userinfo.email https://www.googleapis.com/auth/userinfo.profile'}));
-
-  app.get('/auth/google/callback', passport.authenticate('google', { 
-            failureRedirect: '/',
-            successRedirect : '/protected' })
+  app.get('/auth/google-:guid',
+    (req, res, next) => {
+      console.log("oauth-"+req.session.oauth2return);
+      req.session.oauth2return = req.params.guid;
+      next();
+    },
+    passport.authenticate('google', { scope: ['email', 'profile'] })
   );
-
+  // app.get('/auth/google/callback', passport.authenticate('google', { 
+  //           failureRedirect: '/',
+  //           successRedirect : '/protected' })
+  // );
+  app.get('/auth/google/callback', passport.authenticate('google', { failureRedirect: '/' }),
+    function(req, res, next) {
+      console.log(req.session.oauth2return);
+      if(req.session.oauth2return){
+        res.redirect('/ensure-'+req.session.oauth2return);
+      }else{
+        res.redirect('/protected');
+      }
+      // console.log(req.session.oauth2return);
+    }
+  );
 
 
   app.get('/protected', ensureAuthenticated, function(req, res) {
     res.redirect('/')
+  });
+
+  app.get('/ensure-:guid', ensureAuthenticated, function(req, res) {
+
+    console.log(req.params.guid);
+
+    var ret_val;
+    if(req.user.email){
+      ret_val = req.user.email;
+    }else if(req.user.emails[0].value){
+      ret_val = req.user.emails[0].value;
+    }else{
+      console.log("Auth failed:"+req.user);
+      res.redirect('/campaign-:'+req.params.guid)
+    }
+
+    db.collection('campaign')
+    .updateOne({guid: req.params.guid}, {
+      $push: {
+        email: ret_val
+      }
+    }, {
+      sort: {_id: -1}
+    }, (err, result) => {
+      if (err) return res.send(err)
+      // res.send(result)
+    })
+    db.collection('ships')
+    .updateOne({campaign: req.params.guid}, {
+      $push: {
+        email: ret_val
+      }
+    }, {
+      sort: {_id: -1}
+    }, (err, result) => {
+      if (err) return res.send(err)
+      // res.send(result)
+    })
+      res.redirect('/campaign-'+req.params.guid)
+      
   });
 
 
@@ -756,12 +819,12 @@ function checkAuth(req, res, next, db, callback){
   //       return callback(auth);
         
   //     });
-//     console.log(req.user);
+    // console.log(req.user);
     var ret_val;
-    if(req.user.username){
-      ret_val = req.user.username;
-    }else if(req.user.displayName){
-      ret_val = req.user.displayName;
+    if(req.user.email){
+      ret_val = req.user.email;
+    }else if(req.user.emails[0].value){
+      ret_val = req.user.emails[0].value;
     }else{
       console.log("Auth failed:"+req.user);
       ret_val = fail; 
